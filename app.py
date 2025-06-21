@@ -29,7 +29,7 @@ def login():
             return render_template("login.html", erro="Usuário ou senha inválidos")
     return render_template("login.html")
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5000)
 @app.route("/painel")
 def painel():
     if "usuario" not in session:
