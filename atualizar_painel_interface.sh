@@ -1,3 +1,44 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+echo "🔧 Atualizando a função painel() no app.py..."
+
+cat > temp_painel.py <<EOF
+@app.route("/painel", methods=["GET", "POST"])
+def painel():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    obra_atual = "Vitale Santo André"
+    cor_obra = "#6A1B9A" if obra_atual == "Vitale Santo André" else "#004d40"
+
+    if request.method == "POST":
+        nome = request.form["nome"]
+        cnpj = request.form["cnpj"]
+        cadastrar_fornecedor(nome, cnpj)
+
+    fornecedores = listar_fornecedores()
+    return render_template(
+        "painel.html",
+        usuario=session["usuario"],
+        fornecedores=fornecedores,
+        cor_obra=cor_obra,
+        obra=obra_atual
+    )
+EOF
+
+# Substitui a função painel no app.py
+sed -i '/@app.route(\"\/painel\"/,/@app.route/ {
+    /@app.route/!d
+}' app.py
+
+# Insere a nova função
+sed -i "/@app.route(\"\/painel\"/r temp_painel.py" app.py
+rm temp_painel.py
+echo "✅ Função painel atualizada com sucesso!"
+
+echo "🎨 Atualizando templates/painel.html..."
+
+cat > templates/painel.html <<'EOF'
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -71,3 +112,6 @@
     </main>
 </body>
 </html>
+EOF
+
+echo "✅ Interface HTML atualizada com sucesso!"

@@ -14,28 +14,30 @@ while true; do
 
   case $opcao in
     1)
-      bash ~/downloads/s-ponto-termux/start_vnc.sh
-      read -p "Pressione ENTER para voltar ao menu..."
+      ./start_vnc.sh
+      read -p "Pressione Enter para voltar ao menu..."
       ;;
     2)
-      bash ~/downloads/s-ponto-termux/run_sap.sh
-      read -p "Pressione ENTER para voltar ao menu..."
+      source venv/bin/activate
+      export DISPLAY=:1
+      python sap_organizador/main.py
+      read -p "Pressione Enter para voltar ao menu..."
       ;;
     3)
-      bash ~/downloads/s-ponto-termux/git_push.sh
-      read -p "Pressione ENTER para voltar ao menu..."
+      ./git_push.sh
+      read -p "Pressione Enter para voltar ao menu..."
       ;;
     4)
-      bash ~/downloads/s-ponto-termux/stop_vnc.sh
-      read -p "Pressione ENTER para voltar ao menu..."
+      ./stop_vnc.sh
+      read -p "Pressione Enter para voltar ao menu..."
       ;;
     5)
-      echo "Saindo do menu. Até mais!"
-      break
+      echo "Saindo do sistema..."
+      exit 0
       ;;
     *)
-      echo "❌ Opção inválida! Tente novamente."
-      sleep 1
+      echo "Opção inválida! Tente novamente."
+      read -p "Pressione Enter para voltar ao menu..."
       ;;
   esac
 done
