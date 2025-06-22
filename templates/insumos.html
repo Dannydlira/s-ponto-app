@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Insumos</title>
+</head>
+<body>
+    <h2>Cadastro de Insumos | <a href="{{ url_for('logout') }}">Sair</a></h2>
+
+    <form method="POST">
+        <input type="text" name="nome" placeholder="Nome do insumo" required />
+        <input type="text" name="tipo" placeholder="Tipo do insumo" />
+        <select name="fornecedor_id" required>
+            <option value="">Selecione um fornecedor</option>
+            {% for fornecedor in fornecedores %}
+                <option value="{{ fornecedor[0] }}">{{ fornecedor[1] }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h3>Lista de Insumos</h3>
+    <ul>
+        {% for insumo in insumos %}
+            <li>{{ insumo[1] }} - {{ insumo[2] }} (Fornecedor: {{ insumo[3] or "Não informado" }})</li>
+        {% else %}
+            <li>Nenhum insumo cadastrado.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

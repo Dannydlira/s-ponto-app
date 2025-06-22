@@ -36,6 +36,24 @@
         .logout:hover {
             text-decoration: underline;
         }
+        main {
+            padding: 20px;
+        }
+        input, button {
+            padding: 5px 10px;
+            margin: 5px 0;
+            display: block;
+        }
+        ul {
+            margin-top: 10px;
+        }
+        a.download-link {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            color: #4A148C;
+        }
     </style>
 </head>
 <body>
@@ -68,6 +86,8 @@
                 <li>Não há fornecedores cadastrados.</li>
             {% endfor %}
         </ul>
+
+        <a href="{{ url_for('relatorio_fornecedores') }}" target="_blank">📄 Baixar Relatório PDF</a>
     </main>
 </body>
 </html>

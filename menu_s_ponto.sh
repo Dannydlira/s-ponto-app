@@ -8,7 +8,9 @@ while true; do
   echo "2 - Rodar o sistema (main.py)"
   echo "3 - Enviar código para o GitHub"
   echo "4 - Encerrar VNC"
-  echo "5 - Sair"
+  echo "5 - Rodar sistema Web (Flask)"
+  echo "6 - Atualizar Interface do Painel"
+  echo "0 - Sair"
   echo "----------------------------------"
   read -p "Escolha uma opção [1-5]: " opcao
 
@@ -32,6 +34,14 @@ while true; do
       read -p "Pressione Enter para voltar ao menu..."
       ;;
     5)
+      flask run --host=0.0.0.0 --port=5000
+      read -p "Rodar o sistema Flask..."
+      ;;
+    6)
+      bash atualizar_painel_interface.sh
+      read -p "Atualizar a interface do painel..."
+      ;;
+    0)
       echo "Saindo do sistema..."
       exit 0
       ;;

@@ -1,10 +1,11 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, send_file
+from sap_organizador.crud_insumos import cadastrar_insumo, listar_insumos
 from flask_sqlalchemy import SQLAlchemy
-from flask import send_file
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 import os
 from dotenv import load_dotenv
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+import tempfile
 
 # Carrega as variáveis do arquivo .env
 load_dotenv()
@@ -42,8 +43,24 @@ def login():
             return render_template("login.html", erro="Usuário ou senha inválidos")
     return render_template("login.html")
 
+# Rota para cadastrar insumos
+@app.route("/insumos", methods=["GET", "POST"])
+def insumos():
+    if "usuario" not in session:
+        return redirect(url_for("login"))
+
+    fornecedores = listar_fornecedores()
+
+    if request.method == "POST":
+        nome = request.form["nome"]
+        tipo = request.form["tipo"]
+        fornecedor_id = request.form["fornecedor_id"]
+        cadastrar_insumo(nome, tipo, fornecedor_id)
+
+    insumos = listar_insumos()
+    return render_template("insumos.html", usuario=session["usuario"], fornecedores=fornecedores, insumos=insumos)
+
 # Rota do painel com CRUD
-@app.route("/painel", methods=["GET", "POST"])
 @app.route("/painel", methods=["GET", "POST"])
 def painel():
     if "usuario" not in session:
@@ -65,16 +82,14 @@ def painel():
         cor_obra=cor_obra,
         obra=obra_atual
     )
+
+# Rota de logout
 @app.route("/logout")
 def logout():
     session.pop("usuario", None)
     return redirect(url_for("login"))
 
 # Função para gerar relatório PDF com logo
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
-import tempfile
-
 @app.route("/relatorio_fornecedores")
 def relatorio_fornecedores():
     if "usuario" not in session:
@@ -112,7 +127,6 @@ def relatorio_fornecedores():
     c.save()
     temp.close()
 
-    from flask import send_file
     return send_file(temp.name, as_attachment=True, download_name="relatorio_fornecedores.pdf")
 
 if __name__ == "__main__":
