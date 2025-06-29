@@ -39,20 +39,15 @@
         main {
             padding: 20px;
         }
-        input, button {
-            padding: 5px 10px;
-            margin: 5px 0;
+        .links a {
             display: block;
-        }
-        ul {
-            margin-top: 10px;
-        }
-        a.download-link {
-            display: inline-block;
-            margin-top: 15px;
+            margin: 10px 0;
+            font-size: 18px;
             text-decoration: none;
-            font-weight: bold;
-            color: #4A148C;
+            color: #333;
+        }
+        .links a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -60,34 +55,37 @@
     <header>
         <div class="top-bar">
             <div class="user-info">
-                <img src="{{ url_for('static', filename='logo_obra.jpg') }}" alt="Logo" />
+                <img src="{{ url_for('static', filename='logo_obra.jpg') }}" alt="Logo Obra" />
                 <div>
                     <h2>{{ obra }}</h2>
-                    <p>Bem-vindo(a), {{ usuario }}</p>
+                    <p>Bem-vindo, {{ usuario }}</p>
                 </div>
             </div>
-            <a href="{{ url_for('logout') }}" class="logout">Sair</a>
+            <a class="logout" href="{{ url_for('logout') }}">Sair</a>
         </div>
     </header>
-
-    <main style="padding: 20px;">
-        <h3>Cadastrar Fornecedor</h3>
-        <form method="POST" action="/painel">
-            <input type="text" name="nome" placeholder="Nome do fornecedor" required />
-            <input type="text" name="cnpj" placeholder="CNPJ" />
-            <button type="submit">Cadastrar</button>
-        </form>
-
-        <h3>Lista de Fornecedores</h3>
-        <ul>
-            {% for fornecedor in fornecedores %}
-                <li>{{ fornecedor[1] }} - {{ fornecedor[2] or "CNPJ não informado" }}</li>
-            {% else %}
-                <li>Não há fornecedores cadastrados.</li>
-            {% endfor %}
-        </ul>
-
-        <a href="{{ url_for('relatorio_fornecedores') }}" target="_blank">📄 Baixar Relatório PDF</a>
+    <main>
+        <h3>Menu Principal</h3>
+        <div class="links">
+            <a href="{{ url_for('listar_fornecedores') }}">📦 Fornecedores</a>
+            <a href="{{ url_for('listar_insumos') }}">🧱 Insumos</a>
+            <a href="{{ url_for('listar_usuarios') }}">👤 Usuários</a>
+            <a href="{{ url_for('relatorio_fornecedores') }}" target="_blank">📄 Relatório Fornecedores (PDF)</a>
+            <a href="{{ url_for('relatorio_insumos') }}" target="_blank">📄 Relatório Insumos (PDF)</a>
+        </div>
+<section style="margin-top: 30px;">
+    <h3>Relatórios Rápidos</h3>
+    <a href="{{ url_for('relatorio_form_usuario') }}" target="_blank" style="
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #6A1B9A;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: bold;
+        margin-top: 10px;
+    ">📄 Gerar PDF do Formulário de Usuário</a>
+</section>
     </main>
 </body>
 </html>

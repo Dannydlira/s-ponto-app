@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Insumos</title>
+    <title>Lista de Usuários</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         h2 { text-align: center; color: #333; }
@@ -22,38 +22,27 @@
     </style>
 </head>
 <body>
-    <h2>Insumos</h2>
-
-    <a href="{{ url_for('novo_insumo') }}" class="btn">+ Novo Insumo</a>
-    <a href="{{ url_for('painel') }}" class="btn" style="background-color: #888;">← Voltar</a>
-
+    <h2>Usuários</h2>
+    <a href="{{ url_for('novo_usuario') }}" class="btn">+ Novo Usuário</a>
     <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Fornecedor</th>
+                <th>Usuário</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for i in insumos %}
+            {% for u in usuarios %}
             <tr>
-                <td>{{ i.id }}</td>
-                <td>{{ i.nome }}</td>
-                <td>{{ i.tipo or '-' }}</td>
-                <td>{{ i.fornecedor.nome if i.fornecedor else '-' }}</td>
+                <td>{{ u.id }}</td>
+                <td>{{ u.username }}</td>
                 <td>
-                    <a href="{{ url_for('editar_insumo', id=i.id) }}" class="btn">✏️ Editar</a>
-                    <form action="{{ url_for('excluir_insumo', id=i.id) }}" method="POST" onsubmit="return confirm('Deseja excluir este insumo?');">
+                    <a href="{{ url_for('editar_usuario', id=u.id) }}" class="btn">✏️ Editar</a>
+                    <form action="{{ url_for('excluir_usuario', id=u.id) }}" method="POST" onsubmit="return confirm('Deseja excluir este usuário?');">
                         <button type="submit" class="btn" style="background-color: #b30000;">🗑 Excluir</button>
                     </form>
                 </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="5">Nenhum insumo cadastrado.</td>
             </tr>
             {% endfor %}
         </tbody>
