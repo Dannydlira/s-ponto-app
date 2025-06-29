@@ -1,3 +1,5 @@
+import pymysql
+pymysql.install_as_MySQLdb()
 from flask import Flask, request, render_template, redirect, url_for, session, send_file, flash
 from sap_organizador.modelos import db, Usuario, Fornecedor, Insumo
 from dotenv import load_dotenv
@@ -12,8 +14,15 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "chave_padrao")
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+# Corrigir o prefixo da DATABASE_URL, se necessário
+db_url = os.environ.get("DATABASE_URL")
+if db_url and db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+print("Database URL:", app.config.get('SQLALCHEMY_DATABASE_URI'))
 
 db.init_app(app)
 
@@ -338,5 +347,45 @@ def relatorio_insumos():
         mimetype="application/pdf"
     )
 
+from werkzeug.utils import secure_filename
+import pandas as pd
+
+@app.route("/importar", methods=["GET", "POST"])
+@login_required
+def importar_dados():
+    if request.method == "POST":
+        arquivo = request.files.get("arquivo")
+        if not arquivo:
+            flash("Nenhum arquivo enviado.", "warning")
+            return redirect(url_for("importar_dados"))
+
+        filename = secure_filename(arquivo.filename)
+        caminho = os.path.join(app.root_path, "sap_organizador", "uploads", filename)
+        os.makedirs(os.path.dirname(caminho), exist_ok=True)
+        arquivo.save(caminho)
+
+        try:
+            if filename.endswith(".csv"):
+                df = pd.read_csv(caminho)
+            elif filename.endswith(".xlsx"):
+                df = pd.read_excel(caminho)
+            else:
+                flash("Formato de arquivo não suportado.", "danger")
+                return redirect(url_for("importar_dados"))
+
+            # Exibir as primeiras 5 linhas (exemplo)
+            preview = df.head().to_html(classes="table table-striped", index=False)
+
+            flash("Arquivo importado com sucesso!", "success")
+            return render_template("importar.html", preview=preview)
+
+        except Exception as e:
+            flash(f"Erro ao importar: {e}", "danger")
+
+    return render_template("importar.html")
+
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
