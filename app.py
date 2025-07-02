@@ -1,4 +1,3 @@
-
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask import Flask, request, render_template, redirect, url_for, session, send_file, flash
@@ -17,7 +16,6 @@ app.secret_key = os.getenv("SECRET_KEY", "chave_padrao")
 
 # Corrigir o prefixo da DATABASE_URL, se necessário
 db_url = os.environ.get("DATABASE_URL")
-
 if db_url and db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
 
@@ -27,6 +25,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 print("Database URL:", app.config.get('SQLALCHEMY_DATABASE_URI'))
 
 db.init_app(app)
+
+with app.app_context():
+    db.create_all()
 
 # Decorator para proteger rotas
 def login_required(f):
