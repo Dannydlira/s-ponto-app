@@ -17,5 +17,5 @@ reportlab==4.0.0
 psycopg2-binary==2.9.9
 weasyprint==59.0
 cairocffi==1.6.1
-pillow==11.2.0
+pillow==11.2.1
 
