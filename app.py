@@ -1,3 +1,4 @@
+
 import pymysql
 pymysql.install_as_MySQLdb()
 from flask import Flask, request, render_template, redirect, url_for, session, send_file, flash
@@ -243,7 +244,7 @@ def relatorio_fornecedores():
 
     return send_file(temp.name, as_attachment=True, download_name="relatorio_fornecedores.pdf")
 
-from weasyprint import HTML
+#from weasyprint import HTML
 from datetime import datetime
 from flask import make_response
 
