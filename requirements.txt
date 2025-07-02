@@ -17,3 +17,6 @@ psycopg[binary]
 psycopg2-binary
 pandas==2.0.3
 pandas
+flask
+mysqlclient
+reportlab
