@@ -1,0 +1,16 @@
+#!/data/data/com.termux/files/usr/bin/bash#!/data/data/com.termux/files/usr/bin/bash
+
+echo "🛑 Tentando encerrar o VNC no display :1..." echo "🛑 Tentando encerrar o VNC no display :1..."
+# Tenta encerrar normalmente Tenta encerrar normalmentevncserver -kill :1 2>/dev/null
+vncserver -kill :1 2>/dev/null
+# Aguarda 2 segundos Aguarda 2 segundossleep 2
+sleep 2
+# Verifica se o processo ainda está ativo Verifica se o processo ainda está ativoPID=$(ps aux | grep Xtightvnc | grep -v grep | awk '{print $2}')
+PID=$(ps aux | grep Xtightvnc | grep -v grep | awk '{print $2}') if [ -n "$PID" ]; then echo "⚠️ VNC ainda ativo. Finalizando processo (PID: $PID)..." kill -9 $PID echo "✅ Processo 
+    VNC encerrado à força."
+if [ -n "$PID" ]; thenelse echo "✅ VNC encerrado com sucesso (ou já estava parado)." echo "⚠️ VNC ainda ativo. Finalizando processo (PID: $PID)..."fi kill -9 $PID echo "✅ Processo 
+    VNC encerrado à força."# Remove arquivos de controle travados
+elserm -f ~/.vnc/*.pid ~/.vnc/*.log echo "✅ VNC encerrado com sucesso (ou já estava parado)." fiecho "🧹 Limpeza concluída."
+
+# Remove arquivos de controle travados
+rm -f ~/.vnc/*.pid ~/.vnc/*.log echo "🧹 Limpeza concluída." chmod +x ~/downloads/s-ponto-termux/stop_vnc.sh ./stop_vnc.sh

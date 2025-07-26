@@ -1,0 +1,11 @@
+build:
+  env: python
+  pythonVersion: 3.11.9
+
+services:
+  - type: web
+    name: s-ponto-app
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"

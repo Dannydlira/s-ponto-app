@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: s-ponto-app
+    env: python
+    build:
+      environment:
+        pythonVersion: 3.11.9
+    startCommand: python app.py
+    plan: free
