@@ -1,0 +1,74 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Insumos</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        h2 { text-align: center; color: #333; }
+        table {
+            width: 100%; border-collapse: collapse; margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ccc; padding: 10px; text-align: left;
+        }
+        th { background-color: #f0f0f0; }
+        a.btn {
+            display: inline-block; padding: 6px 12px; text-decoration: none;
+            background-color: #6A1B9A; color: white; border-radius: 4px;
+        }
+        a.btn:hover { background-color: #4a0f6a; }
+        form { display: inline; }
+        button.btn {
+            padding: 6px 12px;
+            border: none;
+            color: white;
+            background-color: #b30000;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button.btn:hover {
+            background-color: #800000;
+        }
+    </style>
+</head>
+<body>
+    <h2>Insumos</h2>
+
+    <!-- Note o prefixo 'insumos.' no url_for -->
+    <a href="{{ url_for('insumos.novo_insumo') }}" class="btn">+ Novo Insumo</a>
+    <a href="{{ url_for('painel') }}" class="btn" style="background-color: #888;">← Voltar</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Fornecedor</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in insumos %}
+            <tr>
+                <td>{{ i.id }}</td>
+                <td>{{ i.nome }}</td>
+                <td>{{ i.tipo or '-' }}</td>
+                <td>{{ i.fornecedor.nome if i.fornecedor else '-' }}</td>
+                <td>
+                  <a href="{{ url_for('insumos.editar_insumo', id=i.id) }}" class="btn">✏️ Editar</a>
+                  <form action="{{ url_for('insumos.excluir_insumo', id=i.id) }}" method="POST">
+                  <button type="submit" class="btn" onclick="return confirm('Confirma exclusão?')">🗑️ Excluir</button>   
+                  </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="5">Nenhum insumo cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
+
