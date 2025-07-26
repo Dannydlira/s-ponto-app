@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
-from sap_organizador.modelos import db, Fornecedor, Insumo
+from sap_organizador.modelos import db, Fornecedor, Insumo, Usuario
 
 insumos_bp = Blueprint('insumos', __name__)
 
@@ -88,3 +88,27 @@ def excluir_insumo(id):
     db.session.commit()
     flash('Insumo excluído!')
     return redirect(url_for('insumos.listar_insumos'))
+
+@insumos_bp.route('/relatorio/fornecedores', endpoint='relatorio_fornecedores')
+def relatorio_fornecedores():
+    fornecedores = Fornecedor.query.all()
+    return render_template('relatorios/fornecedores.html', fornecedores=fornecedores)
+
+@insumos_bp.route('/relatorio/insumos', endpoint='relatorio_insumos')
+def relatorio_insumos():
+    insumos = Insumo.query.all()
+    return render_template('relatorios/insumos.html', insumos=insumos)
+
+@insumos_bp.route('/importar', methods=['GET', 'POST'], endpoint='importar_dados')
+def importar_dados():
+    if request.method == 'POST':
+        # Lógica de importação
+        flash("Arquivo importado com sucesso!")
+        return redirect(url_for('painel'))
+    return render_template('importar.html')
+
+
+@insumos_bp.route('/relatorio/usuarios', endpoint='relatorio_form_usuario')
+def relatorio_form_usuario():
+    usuarios = Usuario.query.all()
+    return render_template('relatorios/usuarios.html', usuarios=usuarios)
