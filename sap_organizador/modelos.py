@@ -1,25 +1,28 @@
+# modelos.py - VERSÃO CORRIGIDA
+
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()  # Criando o objeto db, que será usado no app.py
+# A instância do SQLAlchemy é criada aqui, mas ainda não está ligada a nenhum app.
+db = SQLAlchemy()
 
+# Suas classes de modelo continuam exatamente iguais
 class Usuario(db.Model):
-    __tablename__ = "usuario"  # Ajuste conforme nome real no banco
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    senha = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    senha = db.Column(db.String(120), nullable=False)
 
 class Fornecedor(db.Model):
-    __tablename__ = "fornecedores"
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), nullable=False)
-    cnpj = db.Column(db.String(18))
-    telefone = db.Column(db.String(20))
-    email = db.Column(db.String(255))
+    codigo = db.Column(db.String(50), nullable=True)
+    nome = db.Column(db.String(100), nullable=False)
+    cnpj = db.Column(db.String(20), unique=True, nullable=True)
+    telefone = db.Column(db.String(20), nullable=True)
+    email = db.Column(db.String(100), nullable=True)
+    endereco = db.Column(db.String(255), nullable=True)
     insumos = db.relationship('Insumo', backref='fornecedor', lazy=True)
 
 class Insumo(db.Model):
-    __tablename__ = "insumos"
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), nullable=False)
-    tipo = db.Column(db.String(100))
-    fornecedor_id = db.Column(db.Integer, db.ForeignKey('fornecedores.id'))
+    nome = db.Column(db.String(100), nullable=False)
+    tipo = db.Column(db.String(50))
+    fornecedor_id = db.Column(db.Integer, db.ForeignKey('fornecedor.id'), nullable=True)
