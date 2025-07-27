@@ -2,7 +2,7 @@
 
 import pandas as pd
 # Importa o app e o db para termos o contexto da aplicação e do banco
-from app import app, db
+from s_ponto import app, db
 # Importa o modelo Fornecedor do seu arquivo de modelos
 from modelos import Fornecedor
 

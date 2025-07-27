@@ -1,4 +1,4 @@
-from app import db
+from s_ponto import db
 
 class Fornecedor(db.Model):
     id = db.Column(db.Integer, primary_key=True)

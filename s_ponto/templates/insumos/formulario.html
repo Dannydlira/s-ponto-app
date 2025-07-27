@@ -2,13 +2,13 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Fornecedor</title>
+    <title>Insumo</title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         form { max-width: 500px; margin: auto; background: #f9f9f9; padding: 20px; border-radius: 8px; }
         h2 { text-align: center; color: #333; }
         label { display: block; margin-top: 15px; font-weight: bold; }
-        input {
+        input, select {
             width: 100%; padding: 8px; margin-top: 5px;
             border: 1px solid #ccc; border-radius: 4px;
         }
@@ -24,22 +24,30 @@
     </style>
 </head>
 <body>
-    <h2>{{ 'Editar' if fornecedor else 'Novo' }} Fornecedor</h2>
+    <h2>{{ 'Editar' if insumo else 'Novo' }} Insumo</h2>
     <form method="POST">
         <label for="nome">Nome</label>
-        <input type="text" name="nome" id="nome" required value="{{ fornecedor.nome if fornecedor else '' }}">
+        <input type="text" name="nome" id="nome" required value="{{ insumo.nome if insumo else '' }}">
 
-        <label for="cnpj">CNPJ</label>
-        <input type="text" name="cnpj" id="cnpj" value="{{ fornecedor.cnpj if fornecedor else '' }}">
+        <label for="tipo">Tipo</label>
+        <input type="text" name="tipo" id="tipo" value="{{ insumo.tipo if insumo else '' }}">
 
-        <label for="telefone">Telefone</label>
-        <input type="text" name="telefone" id="telefone" value="{{ fornecedor.telefone if fornecedor else '' }}">
-
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" value="{{ fornecedor.email if fornecedor else '' }}">
+        <label for="fornecedor_id">Fornecedor</label>
+        <select name="fornecedor_id" id="fornecedor_id" required>
+            <option value="">Selecione</option>
+            {% for fornecedor in fornecedores %}
+                <option value="{{ fornecedor.id }}"
+                    {% if insumo and insumo.fornecedor_id == fornecedor.id %}selected{% endif %}>
+                    {{ fornecedor.nome }}
+                </option>
+            {% endfor %}
+        </select>
 
         <button type="submit">Salvar</button>
     </form>
-    <a href="{{ url_for('listar_fornecedores') }}">← Voltar para lista de Fornecedores</a>
+    
+    <!-- A CORREÇÃO ESTÁ AQUI -->
+    <a href="{{ url_for('insumos.listar') }}">← Voltar para lista de Insumos</a>
+    
 </body>
 </html>

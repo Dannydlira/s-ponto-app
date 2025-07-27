@@ -1,4 +1,4 @@
-from app import app, db
+from s_ponto import app, db
 
 print("📦 Criando tabelas no banco de dados...")
 

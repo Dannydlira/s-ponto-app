@@ -1,4 +1,4 @@
-from app import app, db, Usuario
+from s_ponto import app, db, Usuario
 
 print("👤 Criando usuário admin...")
 

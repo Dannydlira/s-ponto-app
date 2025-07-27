@@ -39,7 +39,7 @@
         main {
             padding: 20px;
         }
-        .links a {
+        .links a, .btn-report {
             display: block;
             margin: 10px 0;
             font-size: 18px;
@@ -48,6 +48,16 @@
         }
         .links a:hover {
             text-decoration: underline;
+        }
+        .btn-report {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6A1B9A;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -61,31 +71,25 @@
                     <p>Bem-vindo, {{ usuario }}</p>
                 </div>
             </div>
-            <a class="logout" href="{{ url_for('logout') }}">Sair</a>
+            <a class="logout" href="{{ url_for('main.logout') }}">Sair</a>
         </div>
     </header>
     <main>
         <h3>Menu Principal</h3>
         <div class="links">
-            <a href="{{ url_for('insumos.listar_fornecedores') }}">📦 Fornecedores</a>
-            <a href="{{ url_for('insumos.listar_insumos') }}">🧱 Insumos</a>
-            <a href="{{ url_for('insumos.relatorio_fornecedores') }}" target="_blank">📄 Relatório Fornecedores</a>
-            <a href="{{ url_for('insumos.relatorio_insumos') }}" target="_blank">📄 Relatório Insumos</a> 
-            <a href="{{ url_for('insumos.importar_dados') }}">📥 Importar Arquivo SAP</a>
+            <!-- CORREÇÕES AQUI -->
+            <a href="{{ url_for('fornecedores.listar') }}">📦 Fornecedores</a>
+            <a href="{{ url_for('insumos.listar') }}">🧱 Insumos</a>
+            <a href="{{ url_for('relatorios.fornecedores') }}" target="_blank">📄 Relatório Fornecedores</a>
+            <a href="{{ url_for('relatorios.insumos') }}" target="_blank">📄 Relatório Insumos</a> 
+            <a href="{{ url_for('importacao.upload') }}">📥 Importar Arquivo</a>
         </div>
-<section style="margin-top: 30px;">
-    <h3>Relatórios Rápidos</h3>
-    <a href="{{ url_for('insumos.relatorio_form_usuario') }}" target="_blank"
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #6A1B9A;
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: bold;
-        margin-top: 10px;
-    ">📄 Gerar PDF do Formulário de Usuário</a>
-</section>
+        
+        <section style="margin-top: 30px;">
+            <h3>Relatórios Rápidos</h3>
+            <!-- CORREÇÃO AQUI -->
+            <a href="{{ url_for('relatorios.form_usuario') }}" target="_blank" class="btn-report">📄 Gerar PDF do Formulário de Usuário</a>
+        </section>
     </main>
 </body>
 </html>
